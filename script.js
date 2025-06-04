@@ -12,8 +12,8 @@ fetch('worddata.json')
 function main() {
     const conjugationForms = [
         "present (반말)", "present formal (해요체)", "present very formal(습니다)",
-        "past", "past (formal)", "past (very formal)",
-        "future", "future (formal)", "future (very formal)"
+        "past (반말)", "past formal (해요체)", "past very formal(습니다)",
+        "future (반말)", "future formal (해요체)", "future very formal(습니다)"
     ];
     const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff"];
 
