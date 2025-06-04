@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Korean Conjugation Practice</title>
+        <meta name="description" content="Learn how to conjugate Korean verbs! Includes past, present, future, and imperative.">
+        <meta property="og:title" content="Korean Conjugation Practice">
+        <meta property="og:description" content="Learn how to conjugate Korean verbs!">
+        <meta property="og:type" content="website" />
+        <!-- <meta property="og:image" content="./streamlined_screenshot.png"> -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+        <link rel="stylesheet" href="styles.css">
+        <!-- <link rel="icon" href="./favicon.ico"> -->
+        <!-- <link rel="apple-touch-icon" href="./apple-touch-icon.png"> -->
+        <!-- <link rel="manifest" href="./site.webmanifest"> -->
+    </head>
+    <body>
+    <div id="toppest-container">
+        <h1>Korean Conjugation Practice</h1>
+        <div id="top-container">
+            <div id = "main-view">
+                <div id="streak-container">
+                        <div id="current-streak" class="streak">
+                            <p>Current Streak</p>
+                            <p id="current-streak-text">0</p>
+                        </div>
+                        <div id="max-streak" class="streak">
+                            <p>Max Streak</p>
+                            <p id="max-streak-text">0</p>
+                        </div>
+                    </div>
+                    <div id="verb-container">
+                        <div id="verb-box">
+                            <p id="verb-text">Test 1</p>
+                            <p id="translation" class="display-none">The translation is not implemented</p>
+                        </div>
+                    </div>
+                    <div id="conjugation-inquery-container">
+                        <p id="conjugation-inquery-text">The directions go here.</p>
+                    </div>
+                    <div id="status-container">
+                        <div id="status-box" class="display-none">
+                            <p id="status-text">Correct</p>
+                        </div>
+                    </div>
+                    <div id="input-container">
+                        <div id="input-tooltip" class="tooltip">Invalid characters. Only Hangeul are valid.</div>
+                        <input id="main-text-input" type="text" maxlength="30" aria-label="Answer">
+                    </div>
+                    <div id="settings-container">
+                        <div id="settings-child-container">
+                            <table id="settings-table">
+                                <td style="width:29%"></td>
+                                <td style="width:42%"id="press-any-key-text" class="display-none">Press Enter/Return to continue</td>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div id="donation-section">
+            <p class="footer-text">This app's <a href="https://github.com/baileysnyder/japanese-conjugation" target="_blank">source code</a> is available to use under the GPL-3.0 license.</p>
+            <p class="footer-text display-none">If you've found this app useful and would like to help support it, please consider donating!</p>
+            <form action="https://www.paypal.com/donate" method="post" target="_top" class="display-none">
+                <input type="hidden" name="hosted_button_id" value="D3QUUDNRVJYLL" />
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+            </form>
+        </div>
+    </div>
+    </body>
+    <script src="script.js"></script>
+</html>
