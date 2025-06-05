@@ -11,7 +11,7 @@
         <!-- <meta property="og:image" content="./streamlined_screenshot.png"> -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
         <link rel="stylesheet" href="styles.css">
-        <!-- <link rel="icon" href="./favicon.ico"> -->
+        <link rel="icon" href="./korean.png">
         <!-- <link rel="apple-touch-icon" href="./apple-touch-icon.png"> -->
         <!-- <link rel="manifest" href="./site.webmanifest"> -->
     </head>
@@ -32,12 +32,12 @@
                     </div>
                     <div id="verb-container">
                         <div id="verb-box">
-                            <p id="verb-text">Test 1</p>
-                            <p id="translation" class="display-none">The translation is not implemented</p>
+                            <p id="verb-text"></p>
+                            <p id="translation" class="display-none"></p>
                         </div>
                     </div>
                     <div id="conjugation-inquery-container">
-                        <p id="conjugation-inquery-text">The directions go here.</p>
+                        <p id="conjugation-inquery-text"></p>
                     </div>
                     <div id="status-container">
                         <div id="status-box" class="display-none">
@@ -53,16 +53,81 @@
                             <table id="settings-table">
                                 <td style="width:29%"></td>
                                 <td style="width:42%"id="press-any-key-text" class="display-none">Press Enter/Return to continue</td>
+                                <td style="width:29%"><button id="options-button">Options ⚙️</button></td>
                             </table>
                         </div>
                     </div>
             </div>
+            <!-- This should remove display-none when user presses option, and the element with id main-view should be switched to display-none -->
+            <div id="options-view" class="display-none">
+                <h2>Options</h2>
+                <form id="options-form">
+                    <div id="non-conjugation-settings">
+                        <!-- TODO: Toggle english translation -->
+                        <div class="option-row">
+                            <div class="sub-option-row"><input id="translation-checkbox" type="checkbox" name="translation"><label for="translation-checkbox">Show English translations</label></div>
+                            <div id="translation-sub-options" class="option-row options-indent sub-options">
+                                <div class="sub-option-row"><input id="translation-always-radio" type="radio" name="translationTiming" value="always"><label for="translation-always-radio">always</label></div>
+                                <div class="sub-option-row"><input id="translation-after-radio" type="radio" name="translationTiming" value="after"><label for="translation-after-radio">only after answering</label></div>
+                            </div>
+                        </div>
+                        <!-- TODO: Toggle streak option -->
+                        <div class="option-row"><input id="streak-checkbox" type="checkbox" name="streak"><label for="streak-checkbox">Show current/max streak</label></div>
+                    </div>
+                    <div id="conjugation-settings">
+                        <hr>
+                        <div id="verbs-h3-container">
+                            <h3>Verbs</h3>
+                            <span id="top-must-choose" class="settings-error-text display-none">*Must choose at least 1 option from this category</span>
+                        </div>
+                        <div class="option-row" id="verb-options-container">
+                            <hr>
+                            <div id="verb-conjugation-type-group" class="options-group">
+                            <table style="width:100%" >
+                                <tr>
+                                    <td><input id="verbpresent-checkbox" type="checkbox" name="verbpresent" class="verb-has-variations"><label for="verbpresent-checkbox">Present tense</label></td>
+                                    <td rowspan="3"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
+                                </tr>
+                                <tr><td><input id="verbpast-checkbox" type="checkbox" name="verbpast" class="verb-has-variations"><label for="verbpast-checkbox">Past tense</label></td></tr>
+                                <tr><td><input id="verbfuture-checkbox" type="checkbox" name="verbte"><label for="verbte-checkbox">Future tense</label></td></tr>
+                                <tr><td><input id="verbvolitional-checkbox" type="checkbox" name="verbvolitional" class="verb-has-politeness"><label for="verbvolitional-checkbox">Imperative (not yet implemented)</label></td></tr>
+                            </table>
+                            <div class="advanced-section">
+                                <div id="advanced-text">ADVANCED</div>
+                                <div class="advanced-option"><input id="verbpassive-checkbox" type="checkbox" name="verbpassive" class="verb-has-variations"><label for="verbpassive-checkbox">Inquisitive (not yet implemented)</label></div>
+                                <div class="advanced-option"><input id="verbcausative-checkbox" type="checkbox" name="verbcausative" class="verb-has-variations"><label for="verbcausative-checkbox">Volitional (not yet implemented)</label></div>
+                                <div class="advanced-option"><input id="verbpotential-checkbox" type="checkbox" name="verbpotential" class="verb-has-variations"><label for="verbpotential-checkbox">Declarative (not yet implemented)</label></div>
+                            </div>
+                            </div>
+                            <div id="verb-variations-container">
+                                <div id="verb-politeness-container" class="options-group">
+                                    <hr>
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td><input id="verbplain-checkbox" type="checkbox" name="verbplain"><label for="verbplain-checkbox">Plain (해)</label></td>
+                                            <td rowspan="2"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite"><label for="verbpolite-checkbox">Polite (해요)</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite"><label for="verbpolite-checkbox">Very polite (합니다)</label></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="back-button-container">
+                        <button type="submit" id="back-button">Back ↩</button>
+                    </div>
+                </form>
+            </div>
+            </div>
         </div>
-        <div id="donation-section">
+        <div id="donation-section" class="display-none">
             <p class="footer-text">This app's <a href="https://github.com/cirno009/korean-conjugation-master" target="_blank">source code</a> is available to use under the GPL-3.0 license.</p>
-            <p class="footer-text display-none">If you've found this app useful and would like to help support it, please consider donating!</p>
-            <form action="https://www.paypal.com/donate" method="post" target="_top" class="display-none">
-                <input type="hidden" name="hosted_button_id" value="D3QUUDNRVJYLL" />
+            <p class="footer-text">If you've found this app useful and would like to help support it, please consider donating!</p>
+            <form action="https://www.paypal.com/donate/?business=JD7X8YAB3UPLN&no_recurring=0&currency_code=USD" method="post" target="_blank">
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
             </form>
         </div>
