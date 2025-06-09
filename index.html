@@ -65,6 +65,7 @@
                     <div id="non-conjugation-settings">
                         <!-- TODO: Toggle english translation -->
                         <div class="option-row">
+                            <span id="top-must-choose" class="settings-error-text display-none">*Must choose at least 1 option from this category</span>
                             <div class="sub-option-row"><input id="translation-checkbox" type="checkbox" name="translation"><label for="translation-checkbox">Show English translations</label></div>
                             <div id="translation-sub-options" class="option-row options-indent sub-options">
                                 <div class="sub-option-row"><input id="translation-always-radio" type="radio" name="translationTiming" value="always"><label for="translation-always-radio">always</label></div>
@@ -78,7 +79,6 @@
                         <hr>
                         <div id="verbs-h3-container">
                             <h3>Verbs</h3>
-                            <span id="top-must-choose" class="settings-error-text display-none">*Must choose at least 1 option from this category</span>
                         </div>
                         <div class="option-row" id="verb-options-container">
                             <hr>
@@ -86,17 +86,15 @@
                             <table style="width:100%" >
                                 <tr>
                                     <td><input id="verbpresent-checkbox" type="checkbox" name="verbpresent" class="verb-has-variations"><label for="verbpresent-checkbox">Present tense</label></td>
-                                    <td rowspan="3"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
+                                    <td id="conjugation-must-choose" rowspan="3" class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
                                 </tr>
                                 <tr><td><input id="verbpast-checkbox" type="checkbox" name="verbpast" class="verb-has-variations"><label for="verbpast-checkbox">Past tense</label></td></tr>
-                                <tr><td><input id="verbfuture-checkbox" type="checkbox" name="verbte"><label for="verbte-checkbox">Future tense</label></td></tr>
-                                <tr><td><input id="verbvolitional-checkbox" type="checkbox" name="verbvolitional" class="verb-has-politeness"><label for="verbvolitional-checkbox">Imperative (not yet implemented)</label></td></tr>
+                                <tr><td><input id="verbfuture-checkbox" type="checkbox" name="verbte"><label for="verbfuture-checkbox">Future tense</label></td></tr>
                             </table>
                             <div class="advanced-section">
                                 <div id="advanced-text">ADVANCED</div>
-                                <div class="advanced-option"><input id="verbpassive-checkbox" type="checkbox" name="verbpassive" class="verb-has-variations"><label for="verbpassive-checkbox">Inquisitive (not yet implemented)</label></div>
-                                <div class="advanced-option"><input id="verbcausative-checkbox" type="checkbox" name="verbcausative" class="verb-has-variations"><label for="verbcausative-checkbox">Volitional (not yet implemented)</label></div>
-                                <div class="advanced-option"><input id="verbpotential-checkbox" type="checkbox" name="verbpotential" class="verb-has-variations"><label for="verbpotential-checkbox">Declarative (not yet implemented)</label></div>
+                                <tr><td><input id="verbimperative-checkbox" type="checkbox" name="verbimperative" class="verb-has-politeness"><label for="verbimperative-checkbox">Imperative</label></td></tr>
+                                <div class="advanced-option"><input id="verbcausative-checkbox" type="checkbox" name="verbcausative" class="verb-has-variations" disabled><label for="verbcausative-checkbox">Volitional (not yet implemented)</label></div>
                             </div>
                             </div>
                             <div id="verb-variations-container">
@@ -105,13 +103,13 @@
                                     <table style="width:100%">
                                         <tr>
                                             <td><input id="verbplain-checkbox" type="checkbox" name="verbplain"><label for="verbplain-checkbox">Plain (해)</label></td>
-                                            <td rowspan="2"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
+                                            <td id="politeness-must-choose" rowspan="2"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
                                         </tr>
                                         <tr>
                                             <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite"><label for="verbpolite-checkbox">Polite (해요)</label></td>
                                         </tr>
                                         <tr>
-                                            <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite"><label for="verbpolite-checkbox">Very polite (합니다)</label></td>
+                                            <td><input id="verbverypolite-checkbox" type="checkbox" name="verbpolite"><label for="verbverypolite-checkbox">Very polite (합니다)</label></td>
                                         </tr>
                                     </table>
                                 </div>
