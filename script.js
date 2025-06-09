@@ -124,17 +124,6 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     if (!document.getElementById("translation-always-radio").checked && !document.getElementById("translation-after-radio").checked && document.getElementById("translation-checkbox").checked) {
         document.getElementById("top-must-choose").classList.remove("display-none");
         return;
-    } else if (!document.getElementById("verbpresent-checkbox").checked
-            && !document.getElementById("verbpast-checkbox").checked
-            && !document.getElementById("verbimperative-checkbox").checked
-            && !document.getElementById("verbfuture-checkbox").checked) {
-            document.getElementById("conjugation-must-choose").classList.remove("display-none")
-            return
-    } else if (!document.getElementById("verbplain-checkbox").checked
-            && !document.getElementById("verbpolite-checkbox").checked
-            && !document.getElementById("verbverypolite-checkbox").checked) {
-            document.getElementById("politeness-must-choose").classList.remove("display-none")
-            return
     } else if (document.getElementById("translation-after-radio").checked) {
         translationAfter = true
         document.getElementById("translation").classList.add("display-none")
@@ -151,32 +140,14 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     generateQuestion()
 })
 
-function applySettings() {
-    const present = document.getElementById("verbpresent-checkbox").checked;
-    const past = document.getElementById("verbpast-checkbox").checked;
-    const future = document.getElementById("verbfuture-checkbox").checked;
-    const imperative = document.getElementById("verbimperative-checkbox").checked;
-
-    const plain = document.getElementById("verbplain-checkbox").checked;
-    const polite = document.getElementById("verbpolite-checkbox").checked;
-    const veryPolite = document.getElementById("verbverypolite-checkbox").checked;
-
-    toggledFormIndex = [];
-
-    const tenseFlags = [present, past, future, imperative];
-    const politenessFlags = [plain, polite, veryPolite];
-
-    for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 3; j++) {
-            const formIndex = i * 3 + j;
-            if (!tenseFlags[i] || !politenessFlags[j]) {
-                toggledFormIndex.push(formIndex);
-            }
-        }
-    }
-
-    toggleTranslation(document.getElementById("translation-checkbox").checked);
-    toggleStreak(document.getElementById("streak-checkbox").checked);
+function applySettings(){
+    // const translation = document.getElementById("translation-checkbox").checked;
+    // const streak = document
+    toggleTranslation(document.getElementById("translation-checkbox").checked)
+    toggleStreak(document.getElementById("streak-checkbox").checked)
+    togglePresent(document.getElementById("verbpresent-checkbox").checked)
+    togglePast(document.getElementById("verbpast-checkbox").checked)
+    toggleFuture(document.getElementById("verbfuture-checkbox").checked)
 }
 
 function toggleTranslation(enabled) {
