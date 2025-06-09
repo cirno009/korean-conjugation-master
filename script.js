@@ -84,11 +84,38 @@ function generateQuestion() {
     currentAnswer = wordData[wordIndex][key[formIndex]];
 
     document.getElementById("verb-text").innerText = wordData[wordIndex].word;
-    document.getElementById("conjugation-inquery-text").innerText = conjugationForms[formIndex];
+
+    const tenseEmoji = getTenseEmoji(formIndex);
+    const politenessEmoji = getPolitenessEmoji(formIndex);
+    const conjugationContainer = document.getElementById("conjugation-inquery-text");
+    conjugationContainer.innerHTML = `
+        <span>${conjugationForms[formIndex]}</span>
+        <div class="emoji-indicators">
+            <span class="tense-emoji">${tenseEmoji}</span>
+            <span class="politeness-emoji">${politenessEmoji}</span>
+        </div>
+    `;
+
     document.getElementById("translation").innerText = wordData[wordIndex].tr;
     if (translationAfter) {
         document.getElementById("translation").classList.add("display-none")
     }
+}
+
+function getTenseEmoji(formIndex) {
+    if (formIndex >= 0 && formIndex <= 2) return '⚡'; // Present
+    if (formIndex >= 3 && formIndex <= 5) return '⏪'; // Past
+    if (formIndex >= 6 && formIndex <= 8) return '🔮'; // Future
+    if (formIndex >= 9 && formIndex <= 11) return '❗'; // Imperative
+    return '⚡';
+}
+
+function getPolitenessEmoji(formIndex) {
+    const politenessIndex = formIndex % 3;
+    if (politenessIndex === 0) return '😎'; // Plain (반말)
+    if (politenessIndex === 1) return '😊'; // Polite (해요체)
+    if (politenessIndex === 2) return '🎩'; // Very formal (습니다체)
+    return '😎';
 }
 
 function updateStatus(message, color) {
