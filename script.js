@@ -18,7 +18,7 @@ const conjugationForms = [
   "present (반말)", "present formal (해요체)", "present very formal (습니다)",
   "past (반말)", "past formal (해요체)", "past very formal (습니다)",
    "future (반말)", "future formal (해요체)", "future very formal (습니다)",
-   "imperative (반말)", "imperative formal (세요)", "imperative very formal (십비오)"
+   "imperative (반말)", "imperative formal (세요)", "imperative very formal (십시오)"
 ];
 
 const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
