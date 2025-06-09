@@ -299,6 +299,24 @@ button {
 	padding-right: 0.4rem;
 }
 
+#back-to-home {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 0.75rem;
+    color: #ffffff;
+	background: rgb(63, 63, 63);
+    padding: 6px 12px;
+    border-radius: 6px;
+
+    transition: background 0.2s;
+}
+
+#back-to-home:hover {
+    background-color: rgb(87, 87, 87)
+}
+
 button:hover {
 	background: rgb(70, 70, 70);
 	cursor: pointer;
@@ -383,11 +401,6 @@ h2 {
 	display: inline-block;
 	margin-top: 0;
 	margin-bottom: 0;
-}
-
-.transparent-furigana .rt,
-.transparent {
-	opacity: 0;
 }
 
 .hide-furigana .rt,
@@ -533,4 +546,10 @@ On larger screens, we allow verb-type and status-container to always take up scr
 		margin-bottom: 1rem;
 		margin-top: 1rem;
 	}
+}
+
+@media (max-width: 600px) {
+    #back-to-home {
+        display: none;
+    }
 }

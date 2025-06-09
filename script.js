@@ -3,32 +3,34 @@ let streak = 0;
 let maxStreak = 0;
 let currentAnswer = "";
 let isAwaitingNext = false;
-let translationAfter
+let translationAfter = false;
 let toggledFormIndex = []
 document.getElementById("options-button").onclick = toggleOptions
-document.getElementById("translation-checkbox").onclick = toggleTranslation
 document.getElementById("streak-checkbox").checked = true
 document.getElementById("verbpresent-checkbox").checked = true
 document.getElementById("verbpast-checkbox").checked = true
 document.getElementById("verbfuture-checkbox").checked = true
-
+document.getElementById("verbplain-checkbox").checked = true
+document.getElementById("verbpolite-checkbox").checked = true
+document.getElementById("verbverypolite-checkbox").checked = true
 
 const conjugationForms = [
   "present (반말)", "present formal (해요체)", "present very formal (습니다)",
   "past (반말)", "past formal (해요체)", "past very formal (습니다)",
-   "future (반말)", "future formal (해요체)", "future very formal (습니다)"
+   "future (반말)", "future formal (해요체)", "future very formal (습니다)",
+   "imperative (반말)", "imperative formal (세요)", "imperative very formal (십시오)"
 ];
 
-const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff"];
+const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
 
 fetch('worddata.json')
     .then(res => res.json())
     .then(data => {
         wordData = data;
-        initializeGame();
+        init();
     });
 
-function initializeGame() {
+function init() {
     const inputField = document.getElementById("main-text-input");
     inputField.addEventListener("keydown", onInput);
     generateQuestion();
@@ -79,14 +81,14 @@ function generateQuestion() {
     do {
         formIndex = Math.floor(Math.random() * conjugationForms.length);
     } while (toggledFormIndex.includes(formIndex))
-    console.log(formIndex)
     currentAnswer = wordData[wordIndex][key[formIndex]];
 
     document.getElementById("verb-text").innerText = wordData[wordIndex].word;
     document.getElementById("conjugation-inquery-text").innerText = conjugationForms[formIndex];
     document.getElementById("translation").innerText = wordData[wordIndex].tr;
-    document.getElementById("translation").classList.add("display-none")
-    console.log("New answer is", currentAnswer);
+    if (translationAfter) {
+        document.getElementById("translation").classList.add("display-none")
+    }
 }
 
 function updateStatus(message, color) {
@@ -111,7 +113,6 @@ function controlInput(input) {
     return match ? match.length === input.length : false;
 }
 
-// let checked = false
 function toggleOptions() {
     document.getElementById("main-view").classList.add("display-none")
     document.getElementById("options-view").classList.remove("display-none")
@@ -120,10 +121,20 @@ function toggleOptions() {
 
 document.getElementById("options-form").addEventListener("submit", (event) => {
     event.preventDefault();
-    applySettings();
     if (!document.getElementById("translation-always-radio").checked && !document.getElementById("translation-after-radio").checked && document.getElementById("translation-checkbox").checked) {
         document.getElementById("top-must-choose").classList.remove("display-none");
         return;
+    } else if (!document.getElementById("verbpresent-checkbox").checked
+            && !document.getElementById("verbpast-checkbox").checked
+            && !document.getElementById("verbimperative-checkbox").checked
+            && !document.getElementById("verbfuture-checkbox").checked) {
+            document.getElementById("conjugation-must-choose").classList.remove("display-none")
+            return
+    } else if (!document.getElementById("verbplain-checkbox").checked
+            && !document.getElementById("verbpolite-checkbox").checked
+            && !document.getElementById("verbverypolite-checkbox").checked) {
+            document.getElementById("politeness-must-choose").classList.remove("display-none")
+            return
     } else if (document.getElementById("translation-after-radio").checked) {
         translationAfter = true
         document.getElementById("translation").classList.add("display-none")
@@ -133,17 +144,39 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     document.getElementById("main-view").classList.remove("display-none")
     document.getElementById("options-view").classList.add("display-none")
     document.getElementById("top-must-choose").classList.add("display-none");
+    document.getElementById("conjugation-must-choose").classList.add("display-none")
     document.getElementById("donation-section").classList.add("display-none")
+    document.getElementById("politeness-must-choose").classList.add("display-none")
+    applySettings();
+    generateQuestion()
 })
 
-function applySettings(){
-    // const translation = document.getElementById("translation-checkbox").checked;
-    // const streak = document
-    toggleTranslation(document.getElementById("translation-checkbox").checked)
-    toggleStreak(document.getElementById("streak-checkbox").checked)
-    togglePresent(document.getElementById("verbpresent-checkbox").checked)
-    togglePast(document.getElementById("verbpast-checkbox").checked)
-    toggleFuture(document.getElementById("verbfuture-checkbox").checked)
+function applySettings() {
+    const present = document.getElementById("verbpresent-checkbox").checked;
+    const past = document.getElementById("verbpast-checkbox").checked;
+    const future = document.getElementById("verbfuture-checkbox").checked;
+    const imperative = document.getElementById("verbimperative-checkbox").checked;
+
+    const plain = document.getElementById("verbplain-checkbox").checked;
+    const polite = document.getElementById("verbpolite-checkbox").checked;
+    const veryPolite = document.getElementById("verbverypolite-checkbox").checked;
+
+    toggledFormIndex = [];
+
+    const tenseFlags = [present, past, future, imperative];
+    const politenessFlags = [plain, polite, veryPolite];
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            const formIndex = i * 3 + j;
+            if (!tenseFlags[i] || !politenessFlags[j]) {
+                toggledFormIndex.push(formIndex);
+            }
+        }
+    }
+
+    toggleTranslation(document.getElementById("translation-checkbox").checked);
+    toggleStreak(document.getElementById("streak-checkbox").checked);
 }
 
 function toggleTranslation(enabled) {
@@ -165,37 +198,5 @@ function toggleStreak(enabled) {
         document.getElementById("current-streak-text").classList.add("display-none")
         document.getElementById("max-streak").classList.add("display-none")
         document.getElementById("max-streak-text").classList.add("display-none")
-    }
-}
-
-function togglePresent(enabled) {
-    if (!enabled) {
-        addIndices([0, 1, 2]);
-    } else {
-        toggledFormIndex = toggledFormIndex.filter(index => ![0, 1, 2].includes(index));
-    }
-}
-
-function togglePast(enabled) {
-    if (!enabled) {
-        addIndices([3, 4, 5]);
-    } else {
-        toggledFormIndex = toggledFormIndex.filter(index => ![3, 4, 5].includes(index));
-    }
-}
-
-function toggleFuture(enabled) {
-    if (!enabled) {
-        addIndices([6, 7, 8]);
-    } else {
-        toggledFormIndex = toggledFormIndex.filter(index => ![6, 7, 8].includes(index));
-    }
-}
-
-function addIndices(indices) {
-    for (const i of indices) {
-        if (!toggledFormIndex.includes(i)) {
-            toggledFormIndex.push(i);
-        }
     }
 }
