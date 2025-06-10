@@ -164,8 +164,10 @@ span.rt {
 
 .emoji-indicators {
 	display: flex;
+	justify-content: center;
 	gap: 0.5rem;
 	align-items: center;
+	margin: 0 auto;
 }
 
 .tense-emoji, .politeness-emoji {

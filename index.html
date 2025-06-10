@@ -40,6 +40,10 @@
                     <div id="conjugation-inquery-container">
                         <p id="conjugation-inquery-text"></p>
                     </div>
+                        <div class="emoji-indicators" id="emoji-indicators">
+                            <span class="tense-emoji"></span>
+                            <span class="politeness-emoji"></span>
+                        </div>
                     <div id="status-container">
                         <div id="status-box" class="display-none">
                             <p id="status-text">Correct</p>
@@ -59,12 +63,10 @@
                         </div>
                     </div>
             </div>
-            <!-- This should remove display-none when user presses option, and the element with id main-view should be switched to display-none -->
             <div id="options-view" class="display-none">
                 <h2>Options</h2>
                 <form id="options-form">
                     <div id="non-conjugation-settings">
-                        <!-- TODO: Toggle english translation -->
                         <div class="option-row">
                             <span id="top-must-choose" class="settings-error-text display-none">*Must choose at least 1 option from this category</span>
                             <div class="sub-option-row"><input id="translation-checkbox" type="checkbox" name="translation"><label for="translation-checkbox">Show English translations</label></div>
@@ -73,7 +75,7 @@
                                 <div class="sub-option-row"><input id="translation-after-radio" type="radio" name="translationTiming" value="after"><label for="translation-after-radio">only after answering</label></div>
                             </div>
                         </div>
-                        <!-- TODO: Toggle streak option -->
+                        <div class="option-row"><input id="emojis-checkbox" type="checkbox" name="emoji"><label for="emojis-checkbox">Show emojis below conjugation types</label></div>
                         <div class="option-row"><input id="streak-checkbox" type="checkbox" name="streak"><label for="streak-checkbox">Show current/max streak</label></div>
                     </div>
                     <div id="conjugation-settings">
@@ -94,8 +96,12 @@
                             </table>
                             <div class="advanced-section">
                                 <div id="advanced-text">ADVANCED</div>
-                                <tr><td><input id="verbimperative-checkbox" type="checkbox" name="verbimperative" class="verb-has-politeness"><label for="verbimperative-checkbox">Imperative</label></td></tr>
-                                <div class="advanced-option"><input id="verbcausative-checkbox" type="checkbox" name="verbcausative" class="verb-has-variations" disabled><label for="verbcausative-checkbox">Volitional (not yet implemented)</label></div>
+                                <tr>
+                                    <td><input id="verbimperative-checkbox" type="checkbox" name="verbimperative" class="verb-has-politeness"><label for="verbimperative-checkbox">Imperative</label></td>
+                                    <td><div class="advanced-option"><input id="verbcausative-checkbox" type="checkbox" name="verbcausative" class="verb-has-variations" disabled><label for="verbcausative-checkbox">Volitional (not yet implemented)</label></td>
+                                    <td><div class="advanced-option"><input id="verbreporting-checkbox" type="checkbox" name="verbreporting" class="verb-has-variations" disabled><label for="verbcausative-checkbox">Reporting (not yet implemented)</label></td>
+                                </tr>
+                                </div>
                             </div>
                             </div>
                             <div id="verb-variations-container">

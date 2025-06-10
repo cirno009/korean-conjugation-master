@@ -4,6 +4,8 @@ let maxStreak = 0;
 let currentAnswer = "";
 let isAwaitingNext = false;
 let translationAfter = false;
+let showStreak = true;
+let showEmoji = false;
 let toggledFormIndex = []
 document.getElementById("options-button").onclick = toggleOptions
 document.getElementById("streak-checkbox").checked = true
@@ -15,10 +17,10 @@ document.getElementById("verbpolite-checkbox").checked = true
 document.getElementById("verbverypolite-checkbox").checked = true
 
 const conjugationForms = [
-  "present (반말)", "present formal (해요체)", "present very formal (습니다)",
-  "past (반말)", "past formal (해요체)", "past very formal (습니다)",
-   "future (반말)", "future formal (해요체)", "future very formal (습니다)",
-   "imperative (반말)", "imperative formal (세요)", "imperative very formal (십시오)"
+  "present (반말)", "present polite (해요체)", "present formal (습니다)",
+  "past (반말)", "past polite (해요체)", "past formal (습니다)",
+   "future (반말)", "future polite (해요체)", "future formal (습니다)",
+   "imperative (반말)", "imperative polite (세요)", "imperative formal (십시오)"
 ];
 
 const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
@@ -56,16 +58,18 @@ function onInput(event) {
                 document.getElementById("translation").classList.remove("display-none")
             }
             maxStreak = Math.max(maxStreak, streak);
-            updateStatus("Correct", "green");
+            updateStatus(`Correct.\n${currentAnswer} ○`, "green");
         } else {
             streak = 0;
             if (translationAfter) {
                 document.getElementById("translation").classList.remove("display-none")
             }
-            updateStatus(`Incorrect. Correct answer is ${currentAnswer}`, "red");
+            updateStatus(`${userInput} ×\n${currentAnswer} ○`, "red");
         }
 
-        updateStreakDisplay();
+        if (showStreak) {
+            updateStreakDisplay();
+        }
         inputField.value = "";
         isAwaitingNext = true;
     } else {
@@ -87,15 +91,10 @@ function generateQuestion() {
 
     const tenseEmoji = getTenseEmoji(formIndex);
     const politenessEmoji = getPolitenessEmoji(formIndex);
-    const conjugationContainer = document.getElementById("conjugation-inquery-text");
-    conjugationContainer.innerHTML = `
-        <span>${conjugationForms[formIndex]}</span>
-        <div class="emoji-indicators">
-            <span class="tense-emoji">${tenseEmoji}</span>
-            <span class="politeness-emoji">${politenessEmoji}</span>
-        </div>
-    `;
-
+    document.getElementById("conjugation-inquery-text").innerText = conjugationForms[formIndex];
+    document.querySelector(".tense-emoji").innerText = tenseEmoji;
+    document.querySelector(".politeness-emoji").innerText = politenessEmoji;
+    document.getElementById("emoji-indicators").classList.toggle("display-none", !showEmoji);
     document.getElementById("translation").innerText = wordData[wordIndex].tr;
     if (translationAfter) {
         document.getElementById("translation").classList.add("display-none")
@@ -167,14 +166,32 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     generateQuestion()
 })
 
-function applySettings(){
-    // const translation = document.getElementById("translation-checkbox").checked;
-    // const streak = document
+function applySettings() {
+    const present = document.getElementById("verbpresent-checkbox").checked;
+    const past = document.getElementById("verbpast-checkbox").checked;
+    const future = document.getElementById("verbfuture-checkbox").checked;
+    const imperative = document.getElementById("verbimperative-checkbox").checked;
+
+    const plain = document.getElementById("verbplain-checkbox").checked;
+    const polite = document.getElementById("verbpolite-checkbox").checked;
+    const veryPolite = document.getElementById("verbverypolite-checkbox").checked;
+
+    toggledFormIndex = [];
+
+    const tenseFlags = [present, past, future, imperative];
+    const politenessFlags = [plain, polite, veryPolite];
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            const formIndex = i * 3 + j;
+            if (!tenseFlags[i] || !politenessFlags[j]) {
+                toggledFormIndex.push(formIndex);
+            }
+        }
+    }
     toggleTranslation(document.getElementById("translation-checkbox").checked)
     toggleStreak(document.getElementById("streak-checkbox").checked)
-    togglePresent(document.getElementById("verbpresent-checkbox").checked)
-    togglePast(document.getElementById("verbpast-checkbox").checked)
-    toggleFuture(document.getElementById("verbfuture-checkbox").checked)
+    toggleEmoji(document.getElementById("emojis-checkbox").checked)
 }
 
 function toggleTranslation(enabled) {
@@ -191,10 +208,23 @@ function toggleStreak(enabled) {
         document.getElementById("current-streak-text").classList.remove("display-none")
         document.getElementById("max-streak").classList.remove("display-none")
         document.getElementById("max-streak-text").classList.remove("display-none")
+        showStreak = true
     } else {
         document.getElementById("current-streak").classList.add("display-none")
         document.getElementById("current-streak-text").classList.add("display-none")
         document.getElementById("max-streak").classList.add("display-none")
         document.getElementById("max-streak-text").classList.add("display-none")
+        showStreak = false
+    }
+}
+
+function toggleEmoji(enabled) {
+    console.log("test")
+    if (enabled) {
+        document.getElementById("emoji-indicators").classList.remove("display-none")
+        showEmoji = true
+    } else {
+        document.getElementById("emoji-indicators").classList.add("display-none")
+        showEmoji = false
     }
 }
