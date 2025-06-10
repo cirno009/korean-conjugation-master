@@ -155,6 +155,22 @@ span.rt {
 	font-size: 1.3rem;
 	margin-top: 0.8rem;
 	margin-bottom: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.3rem;
+}
+
+.emoji-indicators {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.tense-emoji, .politeness-emoji {
+	font-size: 1rem;
+	flex-shrink: 0;
 }
 
 #status-container {
