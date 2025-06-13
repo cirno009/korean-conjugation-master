@@ -25,12 +25,25 @@ const conjugationForms = [
 
 const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
 
-fetch('worddata.json')
-    .then(res => res.json())
-    .then(data => {
-        wordData = data;
-        init();
-    });
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("options-button").onclick = toggleOptions;
+
+    // Initialize checkboxes to default values (only if not already set in localStorage)
+    document.getElementById("streak-checkbox").checked = true;
+    document.getElementById("verbpresent-checkbox").checked = true;
+    document.getElementById("verbpast-checkbox").checked = true;
+    document.getElementById("verbfuture-checkbox").checked = true;
+    document.getElementById("verbplain-checkbox").checked = true;
+    document.getElementById("verbpolite-checkbox").checked = true;
+    document.getElementById("verbverypolite-checkbox").checked = true;
+
+    fetch('worddata.json')
+        .then(res => res.json())
+        .then(data => {
+            wordData = data;
+            init(); // init AFTER wordData is ready
+        });
+});
 
 function init() {
     loadLocalStorage();
