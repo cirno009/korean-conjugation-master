@@ -33,6 +33,7 @@ fetch('worddata.json')
     });
 
 function init() {
+    loadLocalStorage();
     const inputField = document.getElementById("main-text-input");
     inputField.addEventListener("keydown", onInput);
     generateQuestion();
@@ -59,6 +60,7 @@ function onInput(event) {
             }
             maxStreak = Math.max(maxStreak, streak);
             updateStatus(`Correct.\n${currentAnswer} ○`, "green");
+            saveLocalStorage()
         } else {
             streak = 0;
             if (translationAfter) {
@@ -113,7 +115,7 @@ function getPolitenessEmoji(formIndex) {
     const politenessIndex = formIndex % 3;
     if (politenessIndex === 0) return '😎'; // Plain (반말)
     if (politenessIndex === 1) return '😊'; // Polite (해요체)
-    if (politenessIndex === 2) return '🎩'; // Very formal (습니다체)
+    if (politenessIndex === 2) return '🎩'; // Formal (습니다체)
     return '😎';
 }
 
@@ -163,7 +165,8 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     document.getElementById("donation-section").classList.add("display-none")
     document.getElementById("politeness-must-choose").classList.add("display-none")
     applySettings();
-    generateQuestion()
+    saveLocalStorage();
+    generateQuestion();
 })
 
 function applySettings() {
@@ -192,6 +195,7 @@ function applySettings() {
     toggleTranslation(document.getElementById("translation-checkbox").checked)
     toggleStreak(document.getElementById("streak-checkbox").checked)
     toggleEmoji(document.getElementById("emojis-checkbox").checked)
+
 }
 
 function toggleTranslation(enabled) {
@@ -219,7 +223,6 @@ function toggleStreak(enabled) {
 }
 
 function toggleEmoji(enabled) {
-    console.log("test")
     if (enabled) {
         document.getElementById("emoji-indicators").classList.remove("display-none")
         showEmoji = true
@@ -227,4 +230,31 @@ function toggleEmoji(enabled) {
         document.getElementById("emoji-indicators").classList.add("display-none")
         showEmoji = false
     }
+}
+
+
+function saveLocalStorage() {
+    var list = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+    list.forEach( el => {
+    localStorage.setItem(el.id, el.checked);
+    // console.log(el.id,el.checked)
+    })
+    localStorage.setItem("maxStreak", maxStreak)
+}
+
+function loadLocalStorage() {
+
+    //For checkbox values
+    document.querySelectorAll('[type="checkbox"], [type="radio"]').forEach(el => {
+        const stored = localStorage.getItem(el.id);
+        if (stored !== null) {
+            el.checked = stored === 'true';
+        }
+    });
+
+    //for streak
+    const storedStreak = localStorage.getItem("maxStreak");
+    if (storedStreak !== null) maxStreak = parseInt(storedStreak);
+    updateStreakDisplay();
+
 }
