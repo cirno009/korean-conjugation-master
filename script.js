@@ -34,6 +34,7 @@ fetch('worddata.json')
 
 function init() {
     loadLocalStorage();
+    applySettings();
     const inputField = document.getElementById("main-text-input");
     inputField.addEventListener("keydown", onInput);
     generateQuestion();
