@@ -27,7 +27,7 @@
                         </div>
                         <div id="max-streak" class="streak">
                             <p>Max Streak</p>
-                            <p id="max-streak-text">0</p>
+                            <p id="max-streak-text"></p>
                         </div>
                     </div>
                     <div id="verb-container">
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="option-row"><input id="emojis-checkbox" type="checkbox" name="emoji"><label for="emojis-checkbox">Show emojis below conjugation types</label></div>
-                        <div class="option-row"><input id="streak-checkbox" type="checkbox" name="streak"><label for="streak-checkbox">Show current/max streak</label></div>
+                        <div class="option-row"><input id="streak-checkbox" type="checkbox" name="streak" checked><label for="streak-checkbox">Show current/max streak</label></div>
                     </div>
                     <div id="conjugation-settings">
                         <hr>
@@ -87,11 +87,11 @@
                             <div id="verb-conjugation-type-group" class="options-group">
                             <table style="width:100%" >
                                 <tr>
-                                    <td><input id="verbpresent-checkbox" type="checkbox" name="verbpresent" class="verb-has-variations"><label for="verbpresent-checkbox">Present tense</label></td>
+                                    <td><input id="verbpresent-checkbox" type="checkbox" name="verbpresent" class="verb-has-variations" checked><label for="verbpresent-checkbox">Present tense</label></td>
                                     <td id="conjugation-must-choose" rowspan="3" class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
                                 </tr>
-                                <tr><td><input id="verbpast-checkbox" type="checkbox" name="verbpast" class="verb-has-variations"><label for="verbpast-checkbox">Past tense</label></td></tr>
-                                <tr><td><input id="verbfuture-checkbox" type="checkbox" name="verbte"><label for="verbfuture-checkbox">Future tense</label></td></tr>
+                                <tr><td><input id="verbpast-checkbox" type="checkbox" name="verbpast" class="verb-has-variations" checked><label for="verbpast-checkbox">Past tense</label></td></tr>
+                                <tr><td><input id="verbfuture-checkbox" type="checkbox" name="verbfuture" class="verb-has-variations" checked><label for="verbfuture-checkbox">Future tense</label></td></tr>
                             </table>
                             <div class="advanced-section">
                                 <div id="advanced-text">ADVANCED</div>
@@ -108,14 +108,14 @@
                                     <hr>
                                     <table style="width:100%">
                                         <tr>
-                                            <td><input id="verbplain-checkbox" type="checkbox" name="verbplain"><label for="verbplain-checkbox">Plain (해)</label></td>
+                                            <td><input id="verbplain-checkbox" type="checkbox" name="verbplain" checked><label for="verbplain-checkbox">Plain (해)</label></td>
                                             <td id="politeness-must-choose" rowspan="2"class="settings-error-text display-none">*Must choose at least 1 option from this category</td>
                                         </tr>
                                         <tr>
-                                            <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite"><label for="verbpolite-checkbox">Polite (해요)</label></td>
+                                            <td><input id="verbpolite-checkbox" type="checkbox" name="verbpolite" checked><label for="verbpolite-checkbox">Polite (해요)</label></td>
                                         </tr>
                                         <tr>
-                                            <td><input id="verbverypolite-checkbox" type="checkbox" name="verbpolite"><label for="verbverypolite-checkbox">Very polite (합니다)</label></td>
+                                            <td><input id="verbverypolite-checkbox" type="checkbox" name="verbpolite" checked><label for="verbverypolite-checkbox">Very polite (합니다)</label></td>
                                         </tr>
                                     </table>
                                 </div>

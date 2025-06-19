@@ -7,14 +7,15 @@ let translationAfter = false;
 let showStreak = true;
 let showEmoji = false;
 let toggledFormIndex = []
-document.getElementById("options-button").onclick = toggleOptions
-document.getElementById("streak-checkbox").checked = true
-document.getElementById("verbpresent-checkbox").checked = true
-document.getElementById("verbpast-checkbox").checked = true
-document.getElementById("verbfuture-checkbox").checked = true
-document.getElementById("verbplain-checkbox").checked = true
-document.getElementById("verbpolite-checkbox").checked = true
-document.getElementById("verbverypolite-checkbox").checked = true
+
+// document.getElementById("streak-checkbox").checked = true
+// document.getElementById("verbpresent-checkbox").checked = true
+// document.getElementById("verbpast-checkbox").checked = true
+// document.getElementById("verbfuture-checkbox").checked = true
+// document.getElementById("verbplain-checkbox").checked = true
+// document.getElementById("verbpolite-checkbox").checked = true
+// document.getElementById("verbverypolite-checkbox").checked = true
+let local = false;
 
 const conjugationForms = [
   "present (반말)", "present polite (해요체)", "present formal (습니다)",
@@ -25,14 +26,19 @@ const conjugationForms = [
 
 const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
 
-fetch('worddata.json')
-    .then(res => res.json())
-    .then(data => {
-        wordData = data;
-        init();
-    });
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("options-button").onclick = toggleOptions
+    fetch('worddata.json')
+        .then(res => res.json())
+        .then(data => {
+            wordData = data;
+            init();
+        });
+})
 
 function init() {
+    loadSettingsFromLocalStorage(); // ← Load first
+    applySettings();                // ← Apply based on saved data
     const inputField = document.getElementById("main-text-input");
     inputField.addEventListener("keydown", onInput);
     generateQuestion();
@@ -58,6 +64,7 @@ function onInput(event) {
                 document.getElementById("translation").classList.remove("display-none")
             }
             maxStreak = Math.max(maxStreak, streak);
+            localStorage.setItem("maxStreak", maxStreak); // Save max streak to local storage
             updateStatus(`Correct.\n${currentAnswer} ○`, "green");
         } else {
             streak = 0;
@@ -171,6 +178,7 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     document.getElementById("donation-section").classList.add("display-none")
     document.getElementById("politeness-must-choose").classList.add("display-none")
     applySettings();
+    saveSettingsToLocalStorage();
     generateQuestion()
 })
 
@@ -235,4 +243,43 @@ function toggleEmoji(enabled) {
         document.getElementById("emoji-indicators").classList.add("display-none")
         showEmoji = false
     }
+}
+
+function saveSettingsToLocalStorage() {
+    const settingIds = [
+        "translation-checkbox", "translation-always-radio", "translation-after-radio",
+        "streak-checkbox", "emojis-checkbox",
+        "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
+        "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+    ];
+
+    settingIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            localStorage.setItem(id, el.checked);
+        }
+    });
+
+    localStorage.setItem("maxStreak", maxStreak); // store max streak too
+}
+
+function loadSettingsFromLocalStorage() {
+    const settingIds = [
+        "translation-checkbox", "translation-always-radio", "translation-after-radio",
+        "streak-checkbox", "emojis-checkbox",
+        "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
+        "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+    ];
+
+    settingIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            const stored = localStorage.getItem(id);
+            if (stored !== null) el.checked = stored === "true";
+        }
+    });
+
+    const storedMaxStreak = localStorage.getItem("maxStreak");
+    if (storedMaxStreak !== null) maxStreak = parseInt(storedMaxStreak);
+    updateStreakDisplay();
 }
