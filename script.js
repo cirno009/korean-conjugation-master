@@ -156,6 +156,14 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     } else {
         translationAfter = false
     }
+    if (!document.getElementById("verbpresent-checkbox").checked && !document.getElementById("verbpast-checkbox").checked && !document.getElementById("verbfuture-checkbox").checked && !document.getElementById("verbimperative-checkbox").checked) {
+        document.getElementById("conjugation-must-choose").classList.remove("display-none");
+        return;
+    }
+    if (!document.getElementById("verbplain-checkbox").checked && !document.getElementById("verbpolite-checkbox").checked && !document.getElementById("verbverypolite-checkbox").checked) {
+        document.getElementById("politeness-must-choose").classList.remove("display-none");
+        return;
+    }
     document.getElementById("main-view").classList.remove("display-none")
     document.getElementById("options-view").classList.add("display-none")
     document.getElementById("top-must-choose").classList.add("display-none");
