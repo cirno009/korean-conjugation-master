@@ -15,6 +15,7 @@ let toggledFormIndex = []
 // document.getElementById("verbplain-checkbox").checked = true
 // document.getElementById("verbpolite-checkbox").checked = true
 // document.getElementById("verbverypolite-checkbox").checked = true
+let local = false;
 
 const conjugationForms = [
   "present (반말)", "present polite (해요체)", "present formal (습니다)",
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function init() {
-    // loadSettingsFromLocalStorage(); // ← Load first
+    loadSettingsFromLocalStorage(); // ← Load first
     applySettings();                // ← Apply based on saved data
     const inputField = document.getElementById("main-text-input");
     inputField.addEventListener("keydown", onInput);
@@ -63,7 +64,7 @@ function onInput(event) {
                 document.getElementById("translation").classList.remove("display-none")
             }
             maxStreak = Math.max(maxStreak, streak);
-            // localStorage.setItem("maxStreak", maxStreak); // Save max streak to local storage
+            localStorage.setItem("maxStreak", maxStreak); // Save max streak to local storage
             updateStatus(`Correct.\n${currentAnswer} ○`, "green");
         } else {
             streak = 0;
@@ -177,7 +178,7 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     document.getElementById("donation-section").classList.add("display-none")
     document.getElementById("politeness-must-choose").classList.add("display-none")
     applySettings();
-    // saveSettingsToLocalStorage();
+    saveSettingsToLocalStorage();
     generateQuestion()
 })
 
@@ -244,53 +245,51 @@ function toggleEmoji(enabled) {
     }
 }
 
-// function saveSettingsToLocalStorage() {
-//     const settingIds = [
-//         "translation-checkbox", "translation-always-radio", "translation-after-radio",
-//         "streak-checkbox", "emojis-checkbox",
-//         "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
-//         "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
-//     ];
+function saveSettingsToLocalStorage() {
+    const settingIds = [
+        "translation-checkbox", "translation-always-radio", "translation-after-radio",
+        "streak-checkbox", "emojis-checkbox",
+        "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
+        "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+    ];
 
-//     settingIds.forEach(id => {
-//         const el = document.getElementById(id);
-//         if (el) {
-//             localStorage.setItem(id, el.checked);
-//         }
-//     });
+    settingIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            localStorage.setItem(id, el.checked);
+        }
+    });
 
-//     localStorage.setItem("maxStreak", maxStreak); // store max streak too
-// }
+    localStorage.setItem("maxStreak", maxStreak); // store max streak too
+}
 
-// function loadSettingsFromLocalStorage() {
-//     const settingIds = [
-//         "translation-checkbox", "translation-always-radio", "translation-after-radio",
-//         "streak-checkbox", "emojis-checkbox",
-//         "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
-//         "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
-//     ];
+function loadSettingsFromLocalStorage() {
+    try {
+        const settingIds = [
+            "translation-checkbox", "translation-always-radio", "translation-after-radio",
+            "streak-checkbox", "emojis-checkbox",
+            "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
+            "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+        ];
 
-//     settingIds.forEach(id => {
-//         const el = document.getElementById(id);
-//         if (el) {
-//             const stored = localStorage.getItem(id);
-//             if (stored === "true" || stored === "false") {
-//                 el.checked = stored === "true";
-//             } else {
-//                 // remove invalid or corrupted value
-//                 localStorage.removeItem(id);
-//             }
-//         }
-//     });
+        settingIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const stored = localStorage.getItem(id);
+                if (stored !== null) el.checked = stored === "true";
+            }
+        });
 
-//     const storedMaxStreak = localStorage.getItem("maxStreak");
-//     const parsed = parseInt(storedMaxStreak);
-//     if (!isNaN(parsed)) {
-//         maxStreak = parsed;
-//     } else {
-//         maxStreak = 0;
-//         localStorage.removeItem("maxStreak");
-//     }
+        const storedMaxStreak = localStorage.getItem("maxStreak");
+        if (storedMaxStreak !== null && !isNaN(parseInt(storedMaxStreak))) {
+            maxStreak = parseInt(storedMaxStreak);
+        } else {
+            maxStreak = 0;
+        }
 
-//     updateStreakDisplay();
-// }
+        updateStreakDisplay();
+    } catch (err) {
+        console.error("Error loading settings from localStorage:", err);
+        localStorage.clear();
+    }
+}
