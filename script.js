@@ -275,11 +275,23 @@ function loadSettingsFromLocalStorage() {
         const el = document.getElementById(id);
         if (el) {
             const stored = localStorage.getItem(id);
-            if (stored !== null) el.checked = stored === "true";
+            if (stored === "true" || stored === "false") {
+                el.checked = stored === "true";
+            } else {
+                // remove invalid or corrupted value
+                localStorage.removeItem(id);
+            }
         }
     });
 
     const storedMaxStreak = localStorage.getItem("maxStreak");
-    if (storedMaxStreak !== null) maxStreak = parseInt(storedMaxStreak);
+    const parsed = parseInt(storedMaxStreak);
+    if (!isNaN(parsed)) {
+        maxStreak = parsed;
+    } else {
+        maxStreak = 0;
+        localStorage.removeItem("maxStreak");
+    }
+
     updateStreakDisplay();
 }
