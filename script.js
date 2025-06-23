@@ -8,23 +8,15 @@ let showStreak = true;
 let showEmoji = false;
 let toggledFormIndex = []
 
-// document.getElementById("streak-checkbox").checked = true
-// document.getElementById("verbpresent-checkbox").checked = true
-// document.getElementById("verbpast-checkbox").checked = true
-// document.getElementById("verbfuture-checkbox").checked = true
-// document.getElementById("verbplain-checkbox").checked = true
-// document.getElementById("verbpolite-checkbox").checked = true
-// document.getElementById("verbverypolite-checkbox").checked = true
-let local = false;
-
 const conjugationForms = [
   "present (반말)", "present polite (해요체)", "present formal (습니다)",
   "past (반말)", "past polite (해요체)", "past formal (습니다)",
    "future (반말)", "future polite (해요체)", "future formal (습니다)",
-   "imperative (반말)", "imperative polite (세요)", "imperative formal (십시오)"
+   "imperative (반말)", "imperative polite (해요체)", "imperative formal (습니다)",
+   "volitional (반말)", "volitional formal (습니다)"
 ];
 
-const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if"];
+const key = ["pr", "prf", "prff", "pa", "paf", "paff", "f", "ff", "fff", "pr", "i", "if", "pi", "pf"];
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("options-button").onclick = toggleOptions
@@ -109,19 +101,20 @@ function generateQuestion() {
 }
 
 function getTenseEmoji(formIndex) {
+    if (formIndex === 12 || formIndex === 13) return '🍻'; // Volitional
     if (formIndex >= 0 && formIndex <= 2) return '⚡'; // Present
     if (formIndex >= 3 && formIndex <= 5) return '⏪'; // Past
     if (formIndex >= 6 && formIndex <= 8) return '🔮'; // Future
     if (formIndex >= 9 && formIndex <= 11) return '❗'; // Imperative
-    return '⚡';
+    return '1';
 }
 
 function getPolitenessEmoji(formIndex) {
     const politenessIndex = formIndex % 3;
-    if (politenessIndex === 0) return '😎'; // Plain (반말)
+    if (politenessIndex === 0 || formIndex === 12) return '😎'; // Plain (반말)
     if (politenessIndex === 1) return '😊'; // Polite (해요체)
-    if (politenessIndex === 2) return '🎩'; // Very formal (습니다체)
-    return '😎';
+    if (politenessIndex === 2 || formIndex === 13) return '🎩'; // formal (습니다체)
+    return '1';
 }
 
 function updateStatus(message, color) {
@@ -163,14 +156,31 @@ document.getElementById("options-form").addEventListener("submit", (event) => {
     } else {
         translationAfter = false
     }
-    if (!document.getElementById("verbpresent-checkbox").checked && !document.getElementById("verbpast-checkbox").checked && !document.getElementById("verbfuture-checkbox").checked && !document.getElementById("verbimperative-checkbox").checked) {
+    if (!document.getElementById("verbpresent-checkbox").checked &&
+        !document.getElementById("verbpast-checkbox").checked &&
+        !document.getElementById("verbfuture-checkbox").checked &&
+        !document.getElementById("verbimperative-checkbox").checked &&
+        !document.getElementById("verbvolitional-checkbox").checked) {
         document.getElementById("conjugation-must-choose").classList.remove("display-none");
         return;
     }
-    if (!document.getElementById("verbplain-checkbox").checked && !document.getElementById("verbpolite-checkbox").checked && !document.getElementById("verbverypolite-checkbox").checked) {
+    if (!document.getElementById("verbplain-checkbox").checked &&
+        !document.getElementById("verbpolite-checkbox").checked &&
+        !document.getElementById("verbverypolite-checkbox").checked) {
         document.getElementById("politeness-must-choose").classList.remove("display-none");
         return;
     }
+    if (document.getElementById("verbvolitional-checkbox").checked &&
+        document.getElementById("verbpolite-checkbox").checked &&
+        !document.getElementById("verbverypolite-checkbox").checked &&
+        !document.getElementById("verbplain-checkbox").checked &&
+        !document.getElementById("verbpresent-checkbox").checked &&
+        !document.getElementById("verbpast-checkbox").checked &&
+        !document.getElementById("verbfuture-checkbox").checked &&
+        !document.getElementById("verbimperative-checkbox").checked) {
+        document.getElementById("politeness-must-choose").classList.remove("display-none");
+        return;
+        }
     document.getElementById("main-view").classList.remove("display-none")
     document.getElementById("options-view").classList.add("display-none")
     document.getElementById("top-must-choose").classList.add("display-none");
@@ -187,6 +197,7 @@ function applySettings() {
     const past = document.getElementById("verbpast-checkbox").checked;
     const future = document.getElementById("verbfuture-checkbox").checked;
     const imperative = document.getElementById("verbimperative-checkbox").checked;
+    const volitional = document.getElementById("verbvolitional-checkbox").checked;
 
     const plain = document.getElementById("verbplain-checkbox").checked;
     const polite = document.getElementById("verbpolite-checkbox").checked;
@@ -202,9 +213,22 @@ function applySettings() {
             const formIndex = i * 3 + j;
             if (!tenseFlags[i] || !politenessFlags[j]) {
                 toggledFormIndex.push(formIndex);
+                console.log(toggledFormIndex)
             }
         }
     }
+
+    if (!volitional && !toggledFormIndex.includes(12)) {
+        toggledFormIndex.push(12);
+            }
+                if (!volitional && !toggledFormIndex.includes(13)) {
+                    toggledFormIndex.push(13);
+                } if (volitional && !plain) {
+                    toggledFormIndex.push(12);
+                } else if (volitional && !polite) {
+                    toggledFormIndex.push(13);
+                }
+
     toggleTranslation(document.getElementById("translation-checkbox").checked)
     toggleStreak(document.getElementById("streak-checkbox").checked)
     toggleEmoji(document.getElementById("emojis-checkbox").checked)
@@ -245,12 +269,14 @@ function toggleEmoji(enabled) {
     }
 }
 
+
+// local storage functions
 function saveSettingsToLocalStorage() {
     const settingIds = [
         "translation-checkbox", "translation-always-radio", "translation-after-radio",
         "streak-checkbox", "emojis-checkbox",
         "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
-        "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+        "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox", "verbvolitional-checkbox"
     ];
 
     settingIds.forEach(id => {
@@ -269,7 +295,7 @@ function loadSettingsFromLocalStorage() {
             "translation-checkbox", "translation-always-radio", "translation-after-radio",
             "streak-checkbox", "emojis-checkbox",
             "verbpresent-checkbox", "verbpast-checkbox", "verbfuture-checkbox", "verbimperative-checkbox",
-            "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox"
+            "verbplain-checkbox", "verbpolite-checkbox", "verbverypolite-checkbox", "verbvolitional-checkbox"
         ];
 
         settingIds.forEach(id => {
@@ -290,6 +316,7 @@ function loadSettingsFromLocalStorage() {
         updateStreakDisplay();
     } catch (err) {
         console.error("Error loading settings from localStorage:", err);
+        console.log("Clearing localStorage due to error.");
         localStorage.clear();
     }
 }
